@@ -4,20 +4,20 @@
 
 ~~~hcl
 module "strongdm_onboarding" {
-  source = "../strongdm_onboarding"
+  source = "github.com/peteroneilljr/strongdm_onboarding"
 
   prefix = "education"
 
-  # EKS resoruces take approximately 30 min
-  create_eks               = false
+  # EKS resoruces take approximately 20 min
+  create_eks               = true
   # Mysql resources take approximately 5 min
   create_mysql             = true
   # RDP resources take approximately 10 min
   create_rdp               = true
   # HTTP resources take approximately 5 min
   create_http              = true
-  # Kibana resources take approximately 20 min
-  create_kibana            = false
+  # Kibana resources take approximately 15 min
+  create_kibana            = true
   # Gateways take approximately 5 min
   create_strongdm_gateways = true
 
