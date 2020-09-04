@@ -1,5 +1,35 @@
 # Terraform Onboarding
 
+## Example
+
+~~~hcl
+module "strongdm_onboarding" {
+  source = "../strongdm_onboarding"
+
+  prefix = "education"
+
+  # EKS resoruces take approximately 30 min
+  create_eks               = false
+  # Mysql resources take approximately 5 min
+  create_mysql             = true
+  # RDP resources take approximately 10 min
+  create_rdp               = true
+  # HTTP resources take approximately 5 min
+  create_http              = true
+  # Kibana resources take approximately 20 min
+  create_kibana            = false
+  # Gateways take approximately 5 min
+  create_strongdm_gateways = true
+
+  vpc_id     = null
+  subnet_ids = null
+
+  tags = {}
+}
+~~~
+
+## What to build
+
 extracted from: https://github.com/strongdm/education/issues/80
 
 A terraform script that can be used to quickly deploy an example strongDM setup in AWS. The purpose of this terraform script is to give a trial user resources they can play with immediately. It should be delivered as a Github repository containing the Terraform scripts along with markdown documentation that tells the user:
