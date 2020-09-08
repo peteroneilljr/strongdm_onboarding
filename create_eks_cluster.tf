@@ -121,3 +121,8 @@ resource "sdm_resource" "k8s_eks_data_eks" {
     }, local.default_tags, var.tags)
   }
 }
+resource "sdm_role_grant" "admin_grant_eks" {
+  count = var.create_eks ? 1 : 0
+  role_id = sdm_role.admins[0].id
+  resource_id = sdm_resource.k8s_eks_data_eks[0].id
+}

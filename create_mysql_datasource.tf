@@ -72,6 +72,11 @@ resource "sdm_resource" "mysql_admin" {
     tags = merge({ Name = "${var.prefix}-mysql-admin" }, local.default_tags, var.tags)
   }
 }
+resource "sdm_role_grant" "admin_grant_mysql_admin" {
+  count = var.create_mysql ? 1 : 0
+  role_id = sdm_role.admins[0].id
+  resource_id = sdm_resource.mysql_admin[0].id
+}
 resource "sdm_resource" "mysql_ro" {
   count = var.create_mysql ? 1 : 0
   mysql {
@@ -85,11 +90,15 @@ resource "sdm_resource" "mysql_ro" {
     tags = merge({ Name = "${var.prefix}-mysql-ro" }, local.default_tags, var.tags)
   }
 }
-
+resource "sdm_role_grant" "read_only_grant_mysql_ro" {
+  count = var.create_mysql ? 1 : 0
+  role_id = sdm_role.read_only[0].id
+  resource_id = sdm_resource.mysql_ro[0].id
+}
 # ---------------------------------------------------------------------------- #
 # Access the EC2 instance with strongDM over SSH
 # ---------------------------------------------------------------------------- #
-resource "sdm_resource" "mysql-ssh" {
+resource "sdm_resource" "mysql_ssh" {
   count = var.create_mysql ? 1 : 0
   ssh_cert {
     # dependant on https://github.com/strongdm/issues/issues/1701
@@ -99,4 +108,9 @@ resource "sdm_resource" "mysql-ssh" {
     port     = 22
     tags     = merge({ Name = "${var.prefix}-mysql-ssh" }, local.default_tags, var.tags)
   }
+}
+resource "sdm_role_grant" "admin_grant_mysql_ssh" {
+  count = var.create_mysql ? 1 : 0
+  role_id = sdm_role.admins[0].id
+  resource_id = sdm_resource.mysql_ssh[0].id
 }

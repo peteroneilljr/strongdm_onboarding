@@ -48,6 +48,16 @@ variable subnet_ids {
   default     = null
   description = "Required when using vpc_id: Specify at least 2 subnets in a list."
 }
+variable admin_users {
+  type        = list(string)
+  default     = null
+  description = "A list of email addresses that will be granted access to all resources."
+}
+variable read_only_users {
+  type        = list(string)
+  default     = null
+  description = "A list of email addresses that will receive read only access."
+}
 # ---------------------------------------------------------------------------- #
 # These data-sources gather the necessary VPC information if a VPC ID is not provided
 # ---------------------------------------------------------------------------- #

@@ -75,3 +75,8 @@ resource "sdm_resource" "windows_server" {
     tags     = merge({ Name = "${var.prefix}-rdp" }, local.default_tags, var.tags)
   }
 }
+resource "sdm_role_grant" "admin_grant_windows_server" {
+  count = var.create_rdp ? 1 : 0
+  role_id = sdm_role.admins[0].id
+  resource_id = sdm_resource.windows_server[0].id
+}
