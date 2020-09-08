@@ -4,7 +4,7 @@
 
 ~~~hcl
 module "strongdm_onboarding" {
-  source = "github.com/peteroneilljr/strongdm_onboarding"
+  source = "../strongdm_onboarding"
 
   prefix = "education"
 
@@ -23,6 +23,26 @@ module "strongdm_onboarding" {
 
   vpc_id     = null
   subnet_ids = null
+
+  # List of existing users to grant resources to
+  # NOTE: An error will occur if these users are already assigned to a role
+  grant_to_existing_users = [
+    "peter+prod@strongdm.com",
+  ]
+
+  # New accounts to create with access to all resources
+  admin_users = [
+    "peter+admin1@strongdm.com", 
+    "peter+admin2@strongdm.com", 
+    "peter+admin3@strongdm.com", 
+  ]
+
+  # New accounts to create with read-only permissions
+  read_only_users = [
+    "peter+user1@strongdm.com",
+    "peter+user2@strongdm.com",
+    "peter+user3@strongdm.com",
+  ]
 
   tags = {}
 }
