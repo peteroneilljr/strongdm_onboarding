@@ -4,7 +4,7 @@
 
 ~~~hcl
 module "strongdm_onboarding" {
-  source = "../strongdm_onboarding"
+  source = "github.com/peteroneilljr/strongdm_onboarding"
 
   # Prefix will be added to resource names
   prefix = "education"
