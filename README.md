@@ -4,8 +4,9 @@
 
 ~~~hcl
 module "strongdm_onboarding" {
-  source = "../strongdm_onboarding"
+  source = "github.com/peteroneilljr/strongdm_onboarding"
 
+  # Prefix will be added to resource names
   prefix = "education"
 
   # EKS resoruces take approximately 20 min
@@ -21,6 +22,7 @@ module "strongdm_onboarding" {
   # Gateways take approximately 5 min
   create_strongdm_gateways = true
 
+  # Leave variables set to null to create resources in default VPC.
   vpc_id     = null
   subnet_ids = null
 
@@ -44,6 +46,7 @@ module "strongdm_onboarding" {
     "peter+user3@strongdm.com",
   ]
 
+  # Tags will be added to strongDM and AWS resources.
   tags = {}
 }
 ~~~
