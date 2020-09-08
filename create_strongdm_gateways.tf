@@ -10,9 +10,6 @@ module "sdm" {
     local.subnet_ids[0],
     local.subnet_ids[1],
   ]
-  dev_mode = true
-  # dev_mode creates smaller ec2 instances 
-
   tags = merge(local.default_tags, var.tags)
 }
 
