@@ -8,6 +8,17 @@ locals {
   database    = "strongdmdb"
   mysql_user_data = <<-USERDATA
   #!/bin/bash
+
+  # add sdm public key
+  cat <<SDM_KEY | tee /etc/ssh/sdm_ca.pub
+  ${data.sdm_ssh_ca_pubkey.this_key.public_key}
+  SDM_KEY
+  cat <<SDM_TRUST | sudo tee -a /etc/ssh/sshd_config
+  TrustedUserCAKeys /etc/ssh/sdm_ca.pub
+  SDM_TRUST
+  systemctl restart sshd
+
+  # setup mysql
   sudo apt update -y 
   sudo apt install -y mysql-server
   sudo mysql_secure_installation <<EOF
@@ -103,7 +114,7 @@ resource "sdm_resource" "mysql_ssh" {
   ssh_cert {
     # dependant on https://github.com/strongdm/issues/issues/1701
     name     = "${var.prefix}-mysql-ssh"
-    username = "ec2-user"
+    username = "ubuntu"
     hostname = aws_instance.mysql[0].private_dns
     port     = 22
     tags     = merge({ Name = "${var.prefix}-mysql-ssh" }, local.default_tags, var.tags)

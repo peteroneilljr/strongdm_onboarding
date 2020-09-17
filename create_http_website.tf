@@ -18,8 +18,19 @@ resource "aws_instance" "web_page" {
   subnet_id = local.subnet_ids[1]
 
   # Configures a simple HTTP web page 
-  user_data = <<EOF
-  #!/bin/bash
+  user_data = <<-EOF
+  #!/bin/bash -xe
+
+  # add sdm public key
+  cat <<SDM_KEY | tee /etc/ssh/sdm_ca.pub
+  ${data.sdm_ssh_ca_pubkey.this_key.public_key}
+  SDM_KEY
+  cat <<SDM_TRUST | sudo tee -a /etc/ssh/sshd_config
+  TrustedUserCAKeys /etc/ssh/sdm_ca.pub
+  SDM_TRUST
+  systemctl restart sshd
+
+  # setup apache
   yum update -y
   amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
   yum install -y httpd mariadb-server

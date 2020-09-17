@@ -84,3 +84,7 @@ locals {
   subnet_ids     = var.subnet_ids != null ? var.subnet_ids : sort(data.aws_subnet_ids.subnets[0].ids)
   default_tags   = { CreatedBy = "strongDM-Onboarding" }
 }
+# ---------------------------------------------------------------------------- #
+# Grab the strongDM CA public key for the authenticated organization
+# ---------------------------------------------------------------------------- #
+data "sdm_ssh_ca_pubkey" "this_key" {}
